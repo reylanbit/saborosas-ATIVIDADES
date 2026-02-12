@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 19 - Galeria de Miniaturas</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .main { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .main img { display: block; width: 100%; height: 420px; object-fit: cover; }
+    .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+    .thumb { border: 2px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; }
+    .thumb.active { border-color: #2563eb; }
+    .thumb img { display: block; width: 100%; height: 120px; object-fit: cover; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Galeria de Miniaturas</h1>
+    <p>Clique nas miniaturas para alterar a imagem principal.</p>
+    <div class="main">
+      <img id="mainImg" src="https://picsum.photos/id/1015/1200/800" alt="Principal">
+    </div>
+    <div class="thumbs">
+      <div class="thumb active" data-src="https://picsum.photos/id/1015/1200/800"><img src="https://picsum.photos/id/1015/400/300" alt="Thumb 1"></div>
+      <div class="thumb" data-src="https://picsum.photos/id/1025/1200/800"><img src="https://picsum.photos/id/1025/400/300" alt="Thumb 2"></div>
+      <div class="thumb" data-src="https://picsum.photos/id/1035/1200/800"><img src="https://picsum.photos/id/1035/400/300" alt="Thumb 3"></div>
+    </div>
+  </div>
+  <script>
+    var mainImg = document.getElementById('mainImg');
+    var thumbs = document.querySelectorAll('.thumb');
+    function setActive(el) {
+      for (var i = 0; i < thumbs.length; i++) thumbs[i].classList.remove('active');
+      el.classList.add('active');
+    }
+    for (var i = 0; i < thumbs.length; i++) {
+      thumbs[i].addEventListener('click', function (e) {
+        var el = e.currentTarget;
+        var src = el.getAttribute('data-src');
+        mainImg.src = src;
+        setActive(el);
+      });
+    }
+  </script>
+</body>
+</html>
