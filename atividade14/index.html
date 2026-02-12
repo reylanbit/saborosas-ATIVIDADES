@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 14 - Carrinho com Array.reduce()</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .grid { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 8px; border-bottom: 1px dashed #e5e7eb; text-align: left; }
+    th { color: #6b7280; font-weight: 700; }
+    td.price { text-align: right; }
+    .summary { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; background: #fff; }
+    .row { display: flex; justify-content: space-between; padding: 8px 0; }
+    .label { color: #6b7280; font-weight: 600; }
+    .value { color: #111827; font-weight: 700; }
+    .total { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Carrinho de Compras com Array.reduce()</h1>
+    <p>Resumo do carrinho calculado com reduce para subtotal e desconto percentual.</p>
+    <div class="grid">
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantidade</th>
+              <th class="price">Preço</th>
+              <th class="price">Total</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+      </div>
+      <div class="summary">
+        <div class="row"><span class="label">Subtotal</span><span id="subtotal" class="value"></span></div>
+        <div class="row"><span class="label">Desconto</span><span id="desconto" class="value"></span></div>
+        <div class="row total"><span class="label">Total</span><span id="total" class="value"></span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var formatBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    var itens = [
+      { nome: 'Higienização Básica', preco: 120, quantidade: 1 },
+      { nome: 'Polimento Rápido', preco: 80, quantidade: 2 },
+      { nome: 'Pacote Completo', preco: 250, quantidade: 1 }
+    ];
+    var descontos = [0.10, 0.05];
+    var subtotalVal = itens.reduce(function (acc, item) { return acc + (item.preco * item.quantidade); }, 0);
+    var descontoVal = descontos.reduce(function (acc, p) { return acc + (subtotalVal * p); }, 0);
+    var totalVal = subtotalVal - descontoVal;
+    var body = document.getElementById('itemsBody');
+    for (var i = 0; i < itens.length; i++) {
+      var tr = document.createElement('tr');
+      var td1 = document.createElement('td'); td1.textContent = itens[i].nome;
+      var td2 = document.createElement('td'); td2.textContent = itens[i].quantidade;
+      var td3 = document.createElement('td'); td3.className = 'price'; td3.textContent = formatBRL.format(itens[i].preco);
+      var td4 = document.createElement('td'); td4.className = 'price'; td4.textContent = formatBRL.format(itens[i].preco * itens[i].quantidade);
+      tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
+      body.appendChild(tr);
+    }
+    document.getElementById('subtotal').textContent = formatBRL.format(subtotalVal);
+    document.getElementById('desconto').textContent = '-' + formatBRL.format(descontoVal);
+    document.getElementById('total').textContent = formatBRL.format(totalVal);
+  </script>
+</body>
+</html>
