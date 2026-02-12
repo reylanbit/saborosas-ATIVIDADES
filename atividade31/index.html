@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 31 - Skip Link e Foco por Teclado</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .header { background: #111827; color: #e5e7eb; padding: 16px; }
+    .nav { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nav a { color: #93c5fd; text-decoration: none; }
+    .skip { position: fixed; left: 16px; top: 16px; padding: 10px 14px; border-radius: 10px; background: #2563eb; color: #fff; transform: translateY(-200%); transition: transform .18s ease; z-index: 1000; }
+    .skip:focus, .skip:focus-visible { transform: translateY(0); }
+    main { outline: none; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+    @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .btn, .nav a { padding: 8px 12px; border-radius: 10px; border: 1px solid transparent; background: #f9fafb; color: #111827; text-decoration: none; display: inline-block; }
+    .btn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .btn:focus-visible, .nav a:focus-visible, .skip:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <a href="#conteudo" class="skip">Pular para o conteúdo</a>
+  <header class="header">
+    <div class="container">
+      <nav class="nav" aria-label="Principal">
+        <a href="#servicos">Serviços</a>
+        <a href="#planos">Planos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+  <main id="conteudo" tabindex="-1">
+    <div class="container">
+      <h1>Conteúdo Principal</h1>
+      <p>Use Tab para focar no link de pulo e ir direto ao conteúdo. O foco visível ajuda na navegação por teclado.</p>
+      <div class="grid">
+        <div class="card">
+          <h2 id="servicos">Serviços</h2>
+          <p>Lista de serviços disponíveis com agendamento.</p>
+          <div class="actions">
+            <button class="btn primary">Agendar</button>
+            <button class="btn">Detalhes</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2 id="planos">Planos</h2>
+          <p>Seleção de planos com benefícios.</p>
+          <div class="actions">
+            <button class="btn primary">Assinar</button>
+            <button class="btn">Comparar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2 id="contato">Contato</h2>
+          <p>Fale conosco para suporte e informações.</p>
+          <div class="actions">
+            <button class="btn primary">Enviar mensagem</button>
+            <button class="btn">Ver FAQ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    var skip = document.querySelector('.skip');
+    var mainEl = document.getElementById('conteudo');
+    skip.addEventListener('click', function (e) {
+      e.preventDefault();
+      mainEl.focus();
+    });
+  </script>
+</body>
+</html>
