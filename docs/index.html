@@ -35,16 +35,18 @@
     .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
     .card h3 { margin: 0; font-size: 16px; color: #e2e8f0; }
     .links { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn { padding: 8px 10px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; text-decoration: none; font-weight: 700; font-size: 13px; }
-    .btn:hover { background: #0e1626; }
+    .btn { padding: 8px 10px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; text-decoration: none; font-weight: 700; font-size: 13px; transition: all 0.2s ease; cursor: pointer; }
+    .btn:hover { background: #1e293b; border-color: #475569; transform: translateY(-1px); }
     .footer { margin-top: 24px; font-size: 13px; color: #94a3b8; }
   </style>
   <style>
     .grid { gap: 16px; }
-    .card { padding: 16px; gap: 12px; }
-    .btn:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
-    .toolbar { margin-top: 16px; display: flex; gap: 8px; }
-    .toolbar input[type="search"] { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; }
+    .card { padding: 16px; gap: 12px; transition: border-color 0.2s ease, transform 0.2s ease; }
+    .card:hover { border-color: #3b82f6; }
+    .btn:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+    .toolbar { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .toolbar input[type="search"] { flex: 1; min-width: 200px; padding: 10px 12px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; transition: border-color 0.2s; }
+    .toolbar input[type="search"]:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
   </style>
 </head>
 <body>
