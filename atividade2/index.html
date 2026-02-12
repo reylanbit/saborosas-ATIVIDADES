@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 2 - Calculadora de Orçamento</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #e5e7eb; }
+    .row:last-child { border-bottom: none; }
+    .total { display: flex; align-items: baseline; justify-content: space-between; margin-top: 16px; font-weight: 700; }
+    .price { color: #111827; font-weight: 600; }
+    .muted { color: #6b7280; }
+    .actions { margin-top: 16px; }
+    .note { font-size: 14px; color: #6b7280; }
+    .checkbox { width: 18px; height: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Calculadora de Orçamento em Tempo Real</h1>
+    <p class="muted">Selecione os serviços e veja o total atualizado instantaneamente.</p>
+    <div class="card" id="budget">
+      <div class="row">
+        <label>
+          <input class="checkbox" type="checkbox" data-preco="120" id="svc1">
+          Higienização Básica
+        </label>
+        <span class="price" data-label="svc1">R$ 120,00</span>
+      </div>
+      <div class="row">
+        <label>
+          <input class="checkbox" type="checkbox" data-preco="250" id="svc2">
+          Pacote Completo
+        </label>
+        <span class="price" data-label="svc2">R$ 250,00</span>
+      </div>
+      <div class="row">
+        <label>
+          <input class="checkbox" type="checkbox" data-preco="80" id="svc3">
+          Polimento Rápido
+        </label>
+        <span class="price" data-label="svc3">R$ 80,00</span>
+      </div>
+      <div class="total">
+        <span>Total</span>
+        <span id="total">R$ 0,00</span>
+      </div>
+      <div class="actions">
+        <p class="note">Os valores são exemplos para testes.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    var formatBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    var totalEl = document.getElementById('total');
+    var budget = document.getElementById('budget');
+    function calcularTotal() {
+      var checks = budget.querySelectorAll('input[type="checkbox"]');
+      var total = 0;
+      for (var i = 0; i < checks.length; i++) {
+        if (checks[i].checked) {
+          total += Number(checks[i].getAttribute('data-preco')) || 0;
+        }
+      }
+      totalEl.textContent = formatBRL.format(total);
+    }
+    budget.addEventListener('change', calcularTotal);
+  </script>
+</body>
+</html>
