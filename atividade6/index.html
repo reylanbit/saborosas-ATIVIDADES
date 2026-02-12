@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 6 - Verificador de Newsletter</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .field { margin-top: 16px; }
+    label { font-weight: 700; }
+    input[type="email"] {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .15s ease;
+      font-size: 16px;
+    }
+    input[type="email"].valid { border-color: #10b981; }
+    input[type="email"].invalid { border-color: #ef4444; }
+    .hint { margin-top: 8px; font-size: 14px; color: #6b7280; }
+    .status { margin-top: 8px; font-weight: 700; }
+    .status.valid { color: #10b981; }
+    .status.invalid { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Verificador de Newsletter</h1>
+    <p>Digite seu e-mail e veja o feedback visual em tempo real.</p>
+
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" placeholder="seuemail@dominio.com">
+      <div class="hint">Validação em tempo real usando Regex.</div>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+  <script>
+    var input = document.getElementById('email');
+    var status = document.getElementById('status');
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    function validateEmail(value) {
+      if (!value) {
+        input.classList.remove('valid', 'invalid');
+        status.textContent = '';
+        status.className = 'status';
+        return;
+      }
+      var ok = regex.test(value);
+      input.classList.toggle('valid', ok);
+      input.classList.toggle('invalid', !ok);
+      status.textContent = ok ? 'Email válido' : 'Email inválido';
+      status.className = ok ? 'status valid' : 'status invalid';
+    }
+    input.addEventListener('input', function () { validateEmail(input.value.trim()); });
+  </script>
+</body>
+</html>
