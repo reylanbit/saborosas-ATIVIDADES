@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 8 - Modal de Saída</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 520px;
+      width: 92%;
+      padding: 20px;
+    }
+    .modal h2 { margin: 0 0 8px; }
+    .modal p { color: #4b5563; }
+    .actions { margin-top: 16px; display: flex; gap: 8px; justify-content: flex-end; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 600; }
+    .btn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .btn:hover { background: #eef2ff; }
+    .btn.primary:hover { background: #1e40af; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Modal de Saída (Exit Intent Popup)</h1>
+    <p>Role e explore a página. Ao mover o mouse para fora pelo topo, um modal aparece uma única vez por sessão.</p>
+    <div style="height: 1200px"></div>
+  </div>
+  <div id="exitOverlay" class="overlay" aria-modal="true" role="dialog">
+    <div class="modal" role="document">
+      <h2>Antes de ir...</h2>
+      <p>Quer receber nossas novidades e ofertas? Assine nossa newsletter.</p>
+      <div class="actions">
+        <button id="exitClose" class="btn">Agora não</button>
+        <button id="exitAccept" class="btn primary">Assinar</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    var overlay = document.getElementById('exitOverlay');
+    var closeBtn = document.getElementById('exitClose');
+    var acceptBtn = document.getElementById('exitAccept');
+    function showOnce() {
+      if (sessionStorage.getItem('exitModalShown') === '1') return;
+      overlay.style.display = 'flex';
+      sessionStorage.setItem('exitModalShown', '1');
+    }
+    document.addEventListener('mouseleave', function (e) {
+      if (e.clientY <= 0) showOnce();
+    });
+    function hide() { overlay.style.display = 'none'; }
+    closeBtn.onclick = hide;
+    acceptBtn.onclick = hide;
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) hide();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') hide();
+    });
+  </script>
+</body>
+</html>
