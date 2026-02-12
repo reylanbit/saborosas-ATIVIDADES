@@ -15,6 +15,7 @@
   <meta name="twitter:title" content="GoDevs — Atividades 1–32">
   <meta name="twitter:description" content="Explore as atividades com uma landing rápida e visual limpo.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/reylanbit/saborosas-ATIVIDADES/main/assets/og-banner.png">
+  <meta name="theme-color" content="#0f172a">
   <style>
     :root { color-scheme: light dark; }
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; margin: 0; background: #0f172a; color: #e5e7eb; }
@@ -37,16 +38,16 @@
 </head>
 <body>
   <a href="#cards" style="position:absolute;left:-9999px;top:-9999px;background:#0b1220;color:#e5e7eb;padding:8px 12px;border-radius:8px;border:1px solid #334155" onfocus="this.style.left='12px';this.style.top='12px'" onblur="this.style.left='-9999px';this.style.top='-9999px'">Ir para conteúdo</a>
-  <div class="container">
-    <div class="hero">
-      <img src="../assets/luan.gif" alt="Preview">
+  <div class="container" role="main">
+    <header class="hero">
+      <img src="../assets/luan.gif" alt="Prévia animada">
       <div>
         <h1>GoDevs — Navegação das Atividades</h1>
         <div class="cta">Clique para ver código e descrição. Para previews públicos, ative GitHub Pages nesta pasta docs.</div>
       </div>
-    </div>
-    <div id="cards" class="grid"></div>
-    <div class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</div>
+    </header>
+    <div id="cards" class="grid" role="list" aria-label="Lista de atividades"></div>
+    <footer class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</footer>
   </div>
   <script>
     var repo = 'https://github.com/reylanbit/saborosas-ATIVIDADES';
@@ -88,18 +89,25 @@
     function addCard(i) {
       var c = document.createElement('div');
       c.className = 'card';
+      c.setAttribute('role', 'listitem');
       var h = document.createElement('h3');
       h.textContent = 'Atividade ' + i + ' — ' + (titles[i] || '');
+      h.id = 'card-title-' + i;
+      c.setAttribute('aria-labelledby', h.id);
       var links = document.createElement('div');
       links.className = 'links';
       var code = document.createElement('a');
       code.className = 'btn';
       code.href = repo + '/tree/main/atividade' + i;
       code.textContent = 'Código';
+      code.setAttribute('aria-label', 'Ver código da atividade ' + i);
+      code.title = 'Ver código da atividade ' + i;
       var html = document.createElement('a');
       html.className = 'btn';
       html.href = repo + '/blob/main/atividade' + i + '/index.html';
       html.textContent = 'index.html';
+      html.setAttribute('aria-label', 'Abrir index.html da atividade ' + i);
+      html.title = 'Abrir index.html da atividade ' + i;
       links.appendChild(code);
       links.appendChild(html);
       c.appendChild(h);
