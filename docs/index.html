@@ -62,6 +62,10 @@
       <button id="sortAsc" class="btn" type="button">Ordenar ↑</button>
       <button id="sortDesc" class="btn" type="button">Ordenar ↓</button>
       <span id="count" class="btn" aria-live="polite">32 resultados</span>
+      <button id="toggleList" class="btn" type="button" aria-expanded="false" aria-controls="drawer">Ver lista</button>
+    </div>
+    <div id="drawer" hidden style="margin-top:12px;border:1px solid #334155;border-radius:12px;padding:12px;background:#0b1220">
+      <div id="drawerList" class="links"></div>
     </div>
     <div id="cards" class="grid" role="list" aria-label="Lista de atividades"></div>
     <footer class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</footer>
@@ -144,6 +148,9 @@
     for (var i = 1; i <= 32; i++) addCard(i);
     var filterEl = document.getElementById('filter');
     var countEl = document.getElementById('count');
+    var toggleListEl = document.getElementById('toggleList');
+    var drawerEl = document.getElementById('drawer');
+    var drawerListEl = document.getElementById('drawerList');
     function updateCount() {
       var items = cardsEl.children;
       var visible = 0;
@@ -160,6 +167,40 @@
       updateCount();
     });
     updateCount();
+    function buildDrawerList(orderDesc) {
+      drawerListEl.innerHTML = '';
+      var seq = [];
+      if (orderDesc) { for (var i = 32; i >= 1; i--) seq.push(i); }
+      else { for (var i = 1; i <= 32; i++) seq.push(i); }
+      for (var i = 0; i < seq.length; i++) {
+        var n = seq[i];
+        var a1 = document.createElement('a');
+        a1.className = 'btn';
+        a1.href = repo + '/tree/main/atividade' + n;
+        a1.textContent = 'Atv ' + n + ' (código)';
+        a1.target = '_blank'; a1.rel = 'noopener';
+        var a2 = document.createElement('a');
+        a2.className = 'btn';
+        a2.href = repo + '/blob/main/atividade' + n + '/index.html';
+        a2.textContent = 'index.html';
+        a2.target = '_blank'; a2.rel = 'noopener';
+        drawerListEl.appendChild(a1);
+        drawerListEl.appendChild(a2);
+      }
+    }
+    toggleListEl.addEventListener('click', function() {
+      var isHidden = drawerEl.hasAttribute('hidden');
+      if (isHidden) {
+        buildDrawerList(false);
+        drawerEl.removeAttribute('hidden');
+        toggleListEl.setAttribute('aria-expanded', 'true');
+        toggleListEl.textContent = 'Ocultar lista';
+      } else {
+        drawerEl.setAttribute('hidden', '');
+        toggleListEl.setAttribute('aria-expanded', 'false');
+        toggleListEl.textContent = 'Ver lista';
+      }
+    });
     window.addEventListener('keydown', function(e) {
       if (e.key === '/' && document.activeElement !== filterEl) { e.preventDefault(); filterEl.focus(); }
     });
@@ -180,12 +221,14 @@
         cardsEl.innerHTML = '';
         for (var i = 0; i < nums.length; i++) addCard(nums[i]);
         filterEl.dispatchEvent(new Event('input'));
+        if (toggleListEl.getAttribute('aria-expanded') === 'true') buildDrawerList(false);
       } else if (t.matches('#sortDesc')) {
         var nums = [];
         for (var i = 32; i >= 1; i--) nums.push(i);
         cardsEl.innerHTML = '';
         for (var i = 0; i < nums.length; i++) addCard(nums[i]);
         filterEl.dispatchEvent(new Event('input'));
+        if (toggleListEl.getAttribute('aria-expanded') === 'true') buildDrawerList(true);
       }
     });
   </script>
