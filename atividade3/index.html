@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 3 - Filtro Dinâmico de Portfólio</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn { padding: 10px 14px; border-radius: 999px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 600; }
+    .btn:hover { background: #eef2ff; }
+    .btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .tag { display: inline-block; padding: 4px 8px; border-radius: 999px; background: #f3f4f6; color: #111827; font-size: 12px; font-weight: 600; }
+    .title { margin: 8px 0 4px; font-weight: 700; }
+    .desc { color: #6b7280; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Filtro Dinâmico de Portfólio</h1>
+    <p>Use os botões para filtrar os projetos por categoria.</p>
+    <div class="filters">
+      <button class="btn active" data-filter="all">Todos</button>
+      <button class="btn" data-filter="web">Web</button>
+      <button class="btn" data-filter="mobile">Mobile</button>
+      <button class="btn" data-filter="design">Design</button>
+    </div>
+    <div class="grid" id="portfolio">
+      <div class="card" data-category="web">
+        <span class="tag">Web</span>
+        <h3 class="title">Site Institucional</h3>
+        <p class="desc">Landing page com responsividade.</p>
+      </div>
+      <div class="card" data-category="mobile">
+        <span class="tag">Mobile</span>
+        <h3 class="title">App de Tarefas</h3>
+        <p class="desc">Gerenciamento de atividades no celular.</p>
+      </div>
+      <div class="card" data-category="design">
+        <span class="tag">Design</span>
+        <h3 class="title">Identidade Visual</h3>
+        <p class="desc">Manual de marca e componentes UI.</p>
+      </div>
+      <div class="card" data-category="web">
+        <span class="tag">Web</span>
+        <h3 class="title">E-commerce</h3>
+        <p class="desc">Catálogo, carrinho e checkout.</p>
+      </div>
+      <div class="card" data-category="mobile">
+        <span class="tag">Mobile</span>
+        <h3 class="title">Fitness Tracker</h3>
+        <p class="desc">Monitoramento de exercícios e saúde.</p>
+      </div>
+      <div class="card" data-category="design">
+        <span class="tag">Design</span>
+        <h3 class="title">UI Kit</h3>
+        <p class="desc">Biblioteca de componentes reutilizáveis.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    var buttons = document.querySelectorAll('[data-filter]');
+    var cards = document.querySelectorAll('[data-category]');
+    function setActive(btn) {
+      for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+      btn.classList.add('active');
+    }
+    function applyFilter(filter) {
+      for (var i = 0; i < cards.length; i++) {
+        var cat = cards[i].getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          cards[i].style.display = '';
+        } else {
+          cards[i].style.display = 'none';
+        }
+      }
+    }
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function (e) {
+        var filter = e.currentTarget.getAttribute('data-filter');
+        setActive(e.currentTarget);
+        applyFilter(filter);
+      });
+    }
+  </script>
+</body>
+</html>
