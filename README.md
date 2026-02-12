@@ -8,3 +8,9 @@
 <p align="center">
   <img src="assets/luan.gif" alt="Demo" width="360" />
 </p>
+<p align="center">
+  <a href="https://github.com/reylanbit/saborosas-ATIVIDADES/issues/new?template=bug_report.md&title=%5BBug%5D+Layout+quebra+no+mobile&labels=bug">Abrir bug: Layout mobile</a> •
+  <a href="https://github.com/reylanbit/saborosas-ATIVIDADES/issues/new?template=bug_report.md&title=%5BBug%5D+Link+quebrado+em+atividade+7&labels=bug">Abrir bug: Link quebrado</a> •
+  <a href="https://github.com/reylanbit/saborosas-ATIVIDADES/issues/new?template=feature_request.md&title=%5BFeature%5D+Ativar+GitHub+Pages&labels=enhancement">Abrir feature: Ativar Pages</a> •
+  <a href="https://github.com/reylanbit/saborosas-ATIVIDADES/issues/new?template=feature_request.md&title=%5BFeature%5D+Adicionar+badges+no+README&labels=enhancement">Abrir feature: Badges README</a>
+</p>
