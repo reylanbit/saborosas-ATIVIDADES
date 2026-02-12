@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 11 - FAQ Accordion</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .faq { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+    .faq-item { border-bottom: 1px solid #e5e7eb; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-title { width: 100%; text-align: left; background: #f9fafb; border: none; padding: 14px 16px; cursor: pointer; font-weight: 700; }
+    .faq-title:hover { background: #eef2ff; }
+    .faq-title.active { background: #2563eb; color: #fff; }
+    .faq-content { display: none; padding: 14px 16px; color: #4b5563; background: #fff; }
+    .faq-item.open .faq-content { display: block; }
+  </style>
+  </head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: FAQ Accordion (Perguntas Frequentes)</h1>
+    <p>Clique na pergunta para ver a resposta. Apenas uma aberta por vez.</p>
+    <div class="faq" id="faq">
+      <div class="faq-item">
+        <button class="faq-title">Como agendar um serviço?</button>
+        <div class="faq-content">Você pode agendar pelo nosso site ou WhatsApp, escolhendo data e horário disponíveis.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-title">Quais formas de pagamento?</button>
+        <div class="faq-content">Aceitamos cartões, Pix e boleto. Pagamentos recorrentes disponíveis em alguns pacotes.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-title">Há garantia nos serviços?</button>
+        <div class="faq-content">Oferecemos garantia de satisfação e cobertura para defeitos em materiais aplicados.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-title">Qual o tempo médio de atendimento?</button>
+        <div class="faq-content">Depende do serviço. Em média, entre 45 minutos e 2 horas.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var items = document.querySelectorAll('.faq-item');
+    var titles = document.querySelectorAll('.faq-title');
+    function closeAll() {
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.remove('open');
+      }
+      for (var j = 0; j < titles.length; j++) {
+        titles[j].classList.remove('active');
+      }
+    }
+    for (var k = 0; k < titles.length; k++) {
+      titles[k].addEventListener('click', function (e) {
+        var btn = e.currentTarget;
+        var item = btn.parentElement;
+        var isOpen = item.classList.contains('open');
+        closeAll();
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.classList.add('active');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
