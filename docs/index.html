@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoDevs — Atividades 1–32</title>
+  <meta name="description" content="Landing das atividades GoDevs com links rápidos e visual limpo.">
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; margin: 0; background: #0f172a; color: #e5e7eb; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .hero { display: flex; align-items: center; gap: 16px; }
+    .hero img { width: 88px; height: 88px; border-radius: 12px; border: 1px solid #334155; object-fit: cover; }
+    .hero h1 { margin: 0; font-size: 28px; }
+    .cta { margin-top: 8px; font-size: 14px; color: #94a3b8; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .card h3 { margin: 0; font-size: 16px; color: #e2e8f0; }
+    .links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn { padding: 8px 10px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; text-decoration: none; font-weight: 700; font-size: 13px; }
+    .btn:hover { background: #0e1626; }
+    .footer { margin-top: 24px; font-size: 13px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <img src="../assets/luan.gif" alt="Preview">
+      <div>
+        <h1>GoDevs — Navegação das Atividades</h1>
+        <div class="cta">Clique para ver código e descrição. Para previews públicos, ative GitHub Pages nesta pasta docs.</div>
+      </div>
+    </div>
+    <div id="cards" class="grid"></div>
+    <div class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</div>
+  </div>
+  <script>
+    var repo = 'https://github.com/reylanbit/saborosas-ATIVIDADES';
+    var cardsEl = document.getElementById('cards');
+    var titles = {
+      1: 'Botão Voltar ao Topo',
+      2: 'Calculadora de Orçamento',
+      3: 'Filtro de Portfólio',
+      4: 'Banner de Cookies',
+      5: 'Filtro de Portfólio (var.)',
+      6: 'Verificador de Newsletter',
+      7: 'Sistema de Abas',
+      8: 'Modal de Saída',
+      9: 'Barra de Progresso de Leitura',
+      10: 'Busca Live em Benefícios',
+      11: 'FAQ Accordion',
+      12: 'Busca de CEP com Fetch',
+      13: 'Resumo de Pedido',
+      14: 'Carrinho com reduce()',
+      15: 'Força de Senha',
+      16: 'Dashboard Promise.all()',
+      17: 'Conversor com Axios',
+      18: 'Galeria Async/Await',
+      19: 'Galeria de Miniaturas',
+      20: 'Notificações ES6',
+      21: 'Dark Mode',
+      22: 'Filtro por Preço',
+      23: 'Contagem Regressiva',
+      24: 'Cards com map()',
+      25: 'Calculadora de Desconto',
+      26: 'Seletor de Planos',
+      27: 'Favoritos com Closures',
+      28: 'Máscaras de Telefone/CPF',
+      29: 'Carrinho Persistente',
+      30: 'Quiz Múltipla Escolha',
+      31: 'Acessibilidade (Skip Link)',
+      32: 'Menu Mobile (Hamburger)'
+    };
+    function addCard(i) {
+      var c = document.createElement('div');
+      c.className = 'card';
+      var h = document.createElement('h3');
+      h.textContent = 'Atividade ' + i + ' — ' + (titles[i] || '');
+      var links = document.createElement('div');
+      links.className = 'links';
+      var code = document.createElement('a');
+      code.className = 'btn';
+      code.href = repo + '/tree/main/atividade' + i;
+      code.textContent = 'Código';
+      var html = document.createElement('a');
+      html.className = 'btn';
+      html.href = repo + '/blob/main/atividade' + i + '/index.html';
+      html.textContent = 'index.html';
+      links.appendChild(code);
+      links.appendChild(html);
+      c.appendChild(h);
+      c.appendChild(links);
+      cardsEl.appendChild(c);
+    }
+    for (var i = 1; i <= 32; i++) addCard(i);
+  </script>
+</body>
+</html>
