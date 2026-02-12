@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 26 - Seletor de Planos com Switch</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-weight: 700; }
+    .btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.06); margin-top: 14px; }
+    .price { font-size: 28px; font-weight: 900; color: #111827; }
+    ul { padding-left: 18px; margin: 10px 0 0; }
+    .status { color: #6b7280; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Seletor de Planos com Switch</h1>
+    <p>Selecione um plano para ver preço e benefícios. Há um caso default para plano desconhecido.</p>
+    <div class="actions">
+      <button class="btn active" data-plan="basico">Básico</button>
+      <button class="btn" data-plan="pro">Pro</button>
+      <button class="btn" data-plan="premium">Premium</button>
+    </div>
+    <div class="card">
+      <div id="planName" class="price">Básico — R$ 49,90/mês</div>
+      <ul id="benefits"></ul>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+  <script>
+    var nameEl = document.getElementById('planName');
+    var benEl = document.getElementById('benefits');
+    var statusEl = document.getElementById('status');
+    function render(plan) {
+      var title = '';
+      var benefits = [];
+      var price = '';
+      switch (plan) {
+        case 'basico':
+          title = 'Básico';
+          price = 'R$ 49,90/mês';
+          benefits = ['Lavagem externa mensal', 'Odorização simples', 'Agendamento padrão'];
+          statusEl.textContent = '';
+          break;
+        case 'pro':
+          title = 'Pro';
+          price = 'R$ 99,90/mês';
+          benefits = ['Lavagem completa mensal', 'Higienização interna trimestral', 'Agendamento prioritário', 'Desconto em serviços adicionais'];
+          statusEl.textContent = '';
+          break;
+        case 'premium':
+          title = 'Premium';
+          price = 'R$ 199,90/mês';
+          benefits = ['Lavagem completa quinzenal', 'Polimento anual', 'Vitrificação opcional com desconto', 'Suporte dedicado', 'Agendamento prioritário'];
+          statusEl.textContent = '';
+          break;
+        default:
+          title = 'Plano não reconhecido';
+          price = '—';
+          benefits = [];
+          statusEl.textContent = 'Selecione um dos planos disponíveis (Básico, Pro, Premium).';
+      }
+      nameEl.textContent = title + ' — ' + price;
+      benEl.innerHTML = benefits.map(function (b) { return '<li>' + b + '</li>'; }).join('');
+    }
+    function setActive(plan) {
+      var buttons = document.querySelectorAll('.actions .btn');
+      for (var i = 0; i < buttons.length; i++) {
+        var p = buttons[i].getAttribute('data-plan');
+        buttons[i].classList.toggle('active', p === plan);
+      }
+    }
+    var actions = document.querySelector('.actions');
+    actions.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t.tagName !== 'BUTTON') return;
+      var plan = t.getAttribute('data-plan');
+      setActive(plan);
+      render(plan);
+    });
+    render('basico');
+  </script>
+</body>
+</html>
