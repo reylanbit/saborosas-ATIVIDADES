@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 27 - Sistema de Favoritos com Closures</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .panel { border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; padding: 12px 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .img { display: block; width: 100%; height: 160px; object-fit: cover; }
+    .meta { padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+    .name { font-weight: 800; color: #111827; }
+    .fav { border: 1px solid #e5e7eb; background: #f9fafb; color: #ef4444; border-radius: 999px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+    .fav.active { background: #fee2e2; border-color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <h1>Missão do Dia: Sistema de Favoritos com Closures</h1>
+      <div id="favPanel" class="panel">Favoritos: 0</div>
+    </div>
+    <div id="grid" class="grid"></div>
+  </div>
+  <script>
+    function svg(id, label) {
+      var base = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#9333ea"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Segoe UI, Arial" font-size="32" fill="#ffffff">'+label+' '+id+'</text></svg>';
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(base);
+    }
+    var products = [
+      { id: 1, nome: 'Lavagem Express', imagem: svg(1, 'Produto') },
+      { id: 2, nome: 'Higienização', imagem: svg(2, 'Produto') },
+      { id: 3, nome: 'Polimento', imagem: svg(3, 'Produto') },
+      { id: 4, nome: 'Vitrificação', imagem: svg(4, 'Produto') },
+      { id: 5, nome: 'Descontaminação', imagem: svg(5, 'Produto') },
+      { id: 6, nome: 'Inspeção', imagem: svg(6, 'Produto') },
+      { id: 7, nome: 'Lavagem Premium', imagem: svg(7, 'Produto') },
+      { id: 8, nome: 'Detailing', imagem: svg(8, 'Produto') }
+    ];
+    function favoritesFactory() {
+      var favs = [];
+      function add(id) { if (favs.indexOf(id) === -1) favs.push(id); }
+      function remove(id) { var i = favs.indexOf(id); if (i !== -1) favs.splice(i, 1); }
+      function has(id) { return favs.indexOf(id) !== -1; }
+      function getAll() { return favs.slice(); }
+      return { add: add, remove: remove, has: has, getAll: getAll };
+    }
+    var favorites = favoritesFactory();
+    var grid = document.getElementById('grid');
+    var panel = document.getElementById('favPanel');
+    var html = products.map(function (p) {
+      return '<div class="card" data-id="'+p.id+'">'
+        + '<img class="img" src="'+p.imagem+'" alt="'+p.nome+'">'
+        + '<div class="meta">'
+        + '<div class="name">'+p.nome+'</div>'
+        + '<button class="fav" aria-label="Favoritar" title="Favoritar">♥</button>'
+        + '</div></div>';
+    }).join('');
+    grid.innerHTML = html;
+    function updatePanel() {
+      var all = favorites.getAll();
+      panel.textContent = 'Favoritos: ' + all.length;
+    }
+    function syncButton(btn, id) {
+      var on = favorites.has(id);
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-label', on ? 'Remover dos favoritos' : 'Favoritar');
+      btn.title = on ? 'Remover dos favoritos' : 'Favoritar';
+    }
+    grid.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t.classList.contains('fav')) {
+        var card = t.closest('.card');
+        var id = parseInt(card.getAttribute('data-id'), 10);
+        if (favorites.has(id)) { favorites.remove(id); } else { favorites.add(id); }
+        syncButton(t, id);
+        updatePanel();
+      }
+    });
+    var buttons = grid.querySelectorAll('.card .fav');
+    for (var i = 0; i < buttons.length; i++) {
+      var id = parseInt(buttons[i].closest('.card').getAttribute('data-id'), 10);
+      syncButton(buttons[i], id);
+    }
+    updatePanel();
+  </script>
+</body>
+</html>
