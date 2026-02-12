@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 28 - Máscara de Telefone e CPF</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-weight: 700; }
+    input { width: 100%; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 16px; }
+    .status { margin-top: 12px; color: #6b7280; }
+    .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+    .row:last-child { border-bottom: none; }
+    .label { color: #6b7280; font-weight: 600; }
+    .value { color: #111827; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Máscara de Telefone e CPF</h1>
+    <div class="card">
+      <div class="grid">
+        <div class="field">
+          <label for="tel">Telefone</label>
+          <input id="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000-0000">
+        </div>
+        <div class="field">
+          <label for="cpf">CPF</label>
+          <input id="cpf" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00">
+        </div>
+      </div>
+      <div class="status">Somente números são validados e armazenados.</div>
+      <div class="row"><span class="label">Telefone (números)</span><span id="telRaw" class="value">—</span></div>
+      <div class="row"><span class="label">CPF (números)</span><span id="cpfRaw" class="value">—</span></div>
+    </div>
+  </div>
+  <script>
+    var telEl = document.getElementById('tel');
+    var cpfEl = document.getElementById('cpf');
+    var telRawEl = document.getElementById('telRaw');
+    var cpfRawEl = document.getElementById('cpfRaw');
+    function onlyDigits(s) { return s.replace(/\D/g, ''); }
+    function maskPhone(d) {
+      var n = d.length;
+      if (n <= 2) return '(' + d;
+      if (n <= 6) return '(' + d.slice(0,2) + ') ' + d.slice(2);
+      if (n <= 10) return '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6);
+      return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7,11);
+    }
+    function maskCPF(d) {
+      var n = d.length;
+      if (n <= 3) return d;
+      if (n <= 6) return d.slice(0,3) + '.' + d.slice(3);
+      if (n <= 9) return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6);
+      return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6,9) + '-' + d.slice(9,11);
+    }
+    function onTelInput() {
+      var d = onlyDigits(telEl.value).slice(0,11);
+      telEl.value = maskPhone(d);
+      telEl.dataset.raw = d;
+      telRawEl.textContent = d || '—';
+    }
+    function onCpfInput() {
+      var d = onlyDigits(cpfEl.value).slice(0,11);
+      cpfEl.value = maskCPF(d);
+      cpfEl.dataset.raw = d;
+      cpfRawEl.textContent = d || '—';
+    }
+    telEl.addEventListener('input', onTelInput);
+    cpfEl.addEventListener('input', onCpfInput);
+  </script>
+</body>
+</html>
