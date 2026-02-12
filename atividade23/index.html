@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 23 - Contagem Regressiva de Oferta</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    .unit { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center; background: #ffffff; }
+    .val { font-size: 36px; font-weight: 900; color: #111827; }
+    .label { color: #6b7280; font-weight: 700; }
+    .status { margin-top: 12px; color: #6b7280; }
+    .end { margin-top: 12px; font-weight: 900; color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Contagem Regressiva de Oferta</h1>
+    <div class="card">
+      <div id="until" class="status"></div>
+      <div class="grid">
+        <div class="unit"><div id="days" class="val">0</div><div class="label">Dias</div></div>
+        <div class="unit"><div id="hours" class="val">0</div><div class="label">Horas</div></div>
+        <div class="unit"><div id="minutes" class="val">0</div><div class="label">Minutos</div></div>
+        <div class="unit"><div id="seconds" class="val">0</div><div class="label">Segundos</div></div>
+      </div>
+      <div id="ended" class="end"></div>
+    </div>
+  </div>
+  <script>
+    var endDate = new Date(2026, 1, 20, 23, 59, 59);
+    var untilEl = document.getElementById('until');
+    var dEl = document.getElementById('days');
+    var hEl = document.getElementById('hours');
+    var mEl = document.getElementById('minutes');
+    var sEl = document.getElementById('seconds');
+    var endedEl = document.getElementById('ended');
+    untilEl.textContent = 'Oferta válida até ' + endDate.toLocaleString('pt-BR');
+    function tick() {
+      var now = Date.now();
+      var diff = endDate.getTime() - now;
+      if (diff <= 0) {
+        dEl.textContent = '0';
+        hEl.textContent = '0';
+        mEl.textContent = '0';
+        sEl.textContent = '0';
+        endedEl.textContent = 'Oferta encerrada';
+        clearInterval(timer);
+        return;
+      }
+      var day = 24 * 60 * 60 * 1000;
+      var hour = 60 * 60 * 1000;
+      var minute = 60 * 1000;
+      var second = 1000;
+      var days = Math.floor(diff / day);
+      var hours = Math.floor((diff % day) / hour);
+      var minutes = Math.floor((diff % hour) / minute);
+      var seconds = Math.floor((diff % minute) / second);
+      dEl.textContent = String(days);
+      hEl.textContent = String(hours);
+      mEl.textContent = String(minutes);
+      sEl.textContent = String(seconds);
+    }
+    var timer = setInterval(tick, 1000);
+    tick();
+  </script>
+</body>
+</html>
