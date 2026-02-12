@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 30 - Quiz de Múltipla Escolha</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .question { border-bottom: 1px dashed #e5e7eb; padding: 12px 0; }
+    .question:last-child { border-bottom: none; }
+    .title { font-weight: 800; color: #111827; }
+    .options { display: grid; gap: 8px; margin-top: 8px; }
+    .actions { margin-top: 16px; display: flex; gap: 10px; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 700; }
+    .btn.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .result { margin-top: 12px; font-weight: 900; }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Quiz de Múltipla Escolha</h1>
+    <div class="card">
+      <div id="quiz"></div>
+      <div class="actions">
+        <button id="submit" class="btn primary">Enviar respostas</button>
+        <button id="restart" class="btn">Reiniciar</button>
+      </div>
+      <div id="result" class="result"></div>
+      <div class="muted">Selecione as alternativas e envie. O resultado mostra acertos e total.</div>
+    </div>
+  </div>
+  <script>
+    var questions = [
+      { pergunta: 'Qual método array retorna um novo array filtrado?', opcoes: ['map', 'filter', 'reduce', 'forEach'], correta: 1 },
+      { pergunta: 'Onde você armazena preferência de tema entre visitas?', opcoes: ['sessionStorage', 'localStorage', 'cookies voláteis', 'cache CSS'], correta: 1 },
+      { pergunta: 'Qual evento é ideal para mascarar inputs em tempo real?', opcoes: ['change', 'blur', 'input', 'submit'], correta: 2 },
+      { pergunta: 'Qual estrutura é indicada para herança em ES6?', opcoes: ['funções factory', 'Classes', 'JSON', 'XHR'], correta: 1 }
+    ];
+    var quizEl = document.getElementById('quiz');
+    var submitEl = document.getElementById('submit');
+    var restartEl = document.getElementById('restart');
+    var resultEl = document.getElementById('result');
+    function renderQuiz() {
+      quizEl.innerHTML = '';
+      for (var i = 0; i < questions.length; i++) {
+        var q = questions[i];
+        var block = document.createElement('div');
+        block.className = 'question';
+        var title = document.createElement('div');
+        title.className = 'title';
+        title.textContent = (i + 1) + '. ' + q.pergunta;
+        var opts = document.createElement('div');
+        opts.className = 'options';
+        for (var j = 0; j < q.opcoes.length; j++) {
+          var id = 'q' + i + '_' + j;
+          var label = document.createElement('label');
+          var input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'q' + i;
+          input.value = String(j);
+          input.id = id;
+          var text = document.createTextNode(' ' + q.opcoes[j]);
+          label.setAttribute('for', id);
+          label.appendChild(input);
+          label.appendChild(text);
+          opts.appendChild(label);
+        }
+        block.appendChild(title);
+        block.appendChild(opts);
+        quizEl.appendChild(block);
+      }
+      resultEl.textContent = '';
+      enable(true);
+    }
+    function enable(on) {
+      submitEl.disabled = !on;
+    }
+    function submitQuiz() {
+      var correct = 0;
+      for (var i = 0; i < questions.length; i++) {
+        var radios = document.querySelectorAll('input[name="q' + i + '"]');
+        var chosen = -1;
+        for (var r = 0; r < radios.length; r++) if (radios[r].checked) { chosen = parseInt(radios[r].value, 10); break; }
+        if (chosen === questions[i].correta) correct += 1;
+      }
+      resultEl.textContent = correct + ' de ' + questions.length + ' acertos';
+      enable(false);
+    }
+    function restartQuiz() {
+      renderQuiz();
+    }
+    submitEl.addEventListener('click', submitQuiz);
+    restartEl.addEventListener('click', restartQuiz);
+    renderQuiz();
+  </script>
+</body>
+</html>
