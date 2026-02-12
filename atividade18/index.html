@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 18 - Galeria com Async/Await</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .status { display: flex; align-items: center; gap: 8px; color: #6b7280; }
+    .spinner { width: 22px; height: 22px; border: 3px solid #e5e7eb; border-top-color: #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    @media (max-width: 920px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+    .card img { display: block; width: 100%; height: 160px; object-fit: cover; }
+    .card .title { padding: 10px 12px; font-size: 14px; color: #374151; }
+    .error { color: #ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Galeria de Fotos com Async/Await</h1>
+    <div id="loading" class="status"><div class="spinner" aria-hidden="true"></div><span>Carregando imagens...</span></div>
+    <div id="error" class="status error"></div>
+    <div id="gallery" class="grid"></div>
+  </div>
+  <script>
+    var loading = document.getElementById('loading');
+    var errorEl = document.getElementById('error');
+    var gallery = document.getElementById('gallery');
+    async function fetchPhotos() {
+      try {
+        loading.style.display = 'flex';
+        errorEl.textContent = '';
+        var res = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=12');
+        var data = await res.json();
+        for (var i = 0; i < data.length; i++) {
+          var c = document.createElement('div');
+          c.className = 'card';
+          var img = document.createElement('img');
+          img.src = data[i].url;
+          img.alt = data[i].title;
+          var t = document.createElement('div');
+          t.className = 'title';
+          t.textContent = data[i].title;
+          c.appendChild(img);
+          c.appendChild(t);
+          gallery.appendChild(c);
+        }
+      } catch (e) {
+        errorEl.textContent = 'Falha ao carregar imagens.';
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+    fetchPhotos();
+  </script>
+</body>
+</html>
