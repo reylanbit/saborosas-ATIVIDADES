@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 13 - Resumo de Pedido com Destructuring</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    .row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed #e5e7eb; padding: 10px 0; }
+    .row:last-child { border-bottom: none; }
+    .label { color: #6b7280; font-weight: 600; }
+    .value { color: #111827; font-weight: 700; }
+    .total { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Resumo de Pedido com Destructuring</h1>
+    <p>Exemplo de checkout que extrai dados com destructuring de objeto e array.</p>
+    <div class="card">
+      <div class="grid">
+        <div>
+          <div class="row"><span class="label">Cliente</span><span id="clienteNome" class="value"></span></div>
+          <div class="row"><span class="label">Email</span><span id="clienteEmail" class="value"></span></div>
+          <div class="row"><span class="label">Primeiro item</span><span id="primeiroItem" class="value"></span></div>
+          <div class="row"><span class="label">Último item</span><span id="ultimoItem" class="value"></span></div>
+        </div>
+        <div>
+          <div class="row"><span class="label">Rua</span><span id="rua" class="value"></span></div>
+          <div class="row"><span class="label">Bairro</span><span id="bairro" class="value"></span></div>
+          <div class="row"><span class="label">Cidade</span><span id="cidade" class="value"></span></div>
+          <div class="row total"><span class="label">Total</span><span id="total" class="value"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var formatBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    var pedido = {
+      cliente: { nome: 'Ana Santos', email: 'ana.santos@example.com' },
+      itens: [
+        { nome: 'Higienização Básica', preco: 120 },
+        { nome: 'Polimento Rápido', preco: 80 },
+        { nome: 'Pacote Completo', preco: 250 }
+      ],
+      endereco: { rua: 'Av. Brasil, 123', bairro: 'Centro', cidade: 'Rio de Janeiro' }
+    };
+    var { cliente: { nome, email }, itens, endereco: { rua, bairro, cidade } } = pedido;
+    var [primeiro, ...resto] = itens;
+    var ultimo = resto[resto.length - 1] || primeiro;
+    var total = itens.reduce(function (acc, item) { return acc + (item.preco || 0); }, 0);
+    document.getElementById('clienteNome').textContent = nome;
+    document.getElementById('clienteEmail').textContent = email;
+    document.getElementById('primeiroItem').textContent = primeiro.nome + ' (' + formatBRL.format(primeiro.preco) + ')';
+    document.getElementById('ultimoItem').textContent = ultimo.nome + ' (' + formatBRL.format(ultimo.preco) + ')';
+    document.getElementById('rua').textContent = rua;
+    document.getElementById('bairro').textContent = bairro;
+    document.getElementById('cidade').textContent = cidade;
+    document.getElementById('total').textContent = formatBRL.format(total);
+  </script>
+</body>
+</html>
