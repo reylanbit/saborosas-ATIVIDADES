@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 20 - Sistema de Notificações com Classes ES6</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 700; }
+    .btn:hover { background: #eef2ff; }
+    .btn.success { background: #10b981; border-color: #10b981; color: #fff; }
+    .btn.error { background: #ef4444; border-color: #ef4444; color: #fff; }
+    .btn.warning { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+    .toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+    .toast {
+      min-width: 240px;
+      max-width: 420px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: #111827;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      border: 1px solid #e5e7eb;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); }
+    .toast.success { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+    .toast.error { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
+    .toast.warning { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Sistema de Notificações com Classes ES6</h1>
+    <p>Toasts com show, hide e auto-dismiss utilizando herança e super().</p>
+    <div class="actions">
+      <button id="btnSuccess" class="btn success">Mostrar Sucesso</button>
+      <button id="btnError" class="btn error">Mostrar Erro</button>
+      <button id="btnWarning" class="btn warning">Mostrar Aviso</button>
+    </div>
+  </div>
+  <div id="toastContainer" class="toasts"></div>
+  <script>
+    class Notification {
+      constructor(message, duration) {
+        this.message = message;
+        this.duration = duration || 3000;
+        this.el = null;
+        this.timer = null;
+      }
+      getClass() { return 'toast'; }
+      show() {
+        if (this.el) return;
+        var el = document.createElement('div');
+        el.className = this.getClass();
+        el.textContent = this.message;
+        var container = document.getElementById('toastContainer');
+        container.appendChild(el);
+        this.el = el;
+        var self = this;
+        this.timer = setTimeout(function () { self.hide(); }, this.duration);
+        requestAnimationFrame(function () { el.classList.add('visible'); });
+      }
+      hide() {
+        if (!this.el) return;
+        clearTimeout(this.timer);
+        this.timer = null;
+        var el = this.el;
+        el.classList.remove('visible');
+        var parent = el.parentNode;
+        var self = this;
+        setTimeout(function () {
+          if (parent && el.parentNode) parent.removeChild(el);
+          self.el = null;
+        }, 180);
+      }
+    }
+    class SuccessNotification extends Notification {
+      constructor(message, duration) { super(message, duration); }
+      getClass() { return 'toast success'; }
+    }
+    class ErrorNotification extends Notification {
+      constructor(message, duration) { super(message, duration); }
+      getClass() { return 'toast error'; }
+    }
+    class WarningNotification extends Notification {
+      constructor(message, duration) { super(message, duration); }
+      getClass() { return 'toast warning'; }
+    }
+    var bSuccess = document.getElementById('btnSuccess');
+    var bError = document.getElementById('btnError');
+    var bWarning = document.getElementById('btnWarning');
+    bSuccess.addEventListener('click', function () {
+      new SuccessNotification('Operação concluída com sucesso!', 3000).show();
+    });
+    bError.addEventListener('click', function () {
+      new ErrorNotification('Algo deu errado. Tente novamente.', 4000).show();
+    });
+    bWarning.addEventListener('click', function () {
+      new WarningNotification('Atenção: verifique os dados informados.', 3500).show();
+    });
+  </script>
+</body>
+</html>
