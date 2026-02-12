@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 12 - Busca de CEP com Fetch API</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-weight: 700; }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+      transition: border-color .15s ease;
+      background: #fff;
+    }
+    input:disabled { background: #f9fafb; color: #6b7280; }
+    .status { margin-top: 8px; font-size: 14px; }
+    .status.error { color: #ef4444; }
+    .status.success { color: #10b981; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Busca de CEP com Fetch API</h1>
+    <p>Digite o CEP e os campos de endereço serão preenchidos automaticamente.</p>
+    <div class="grid">
+      <div class="field">
+        <label for="cep">CEP</label>
+        <input id="cep" type="text" inputmode="numeric" placeholder="Somente números">
+        <div id="status" class="status"></div>
+      </div>
+      <div class="field">
+        <label for="rua">Rua</label>
+        <input id="rua" type="text" disabled>
+      </div>
+      <div class="field">
+        <label for="bairro">Bairro</label>
+        <input id="bairro" type="text" disabled>
+      </div>
+      <div class="field">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" type="text" disabled>
+      </div>
+    </div>
+  </div>
+  <script>
+    var cepInput = document.getElementById('cep');
+    var rua = document.getElementById('rua');
+    var bairro = document.getElementById('bairro');
+    var cidade = document.getElementById('cidade');
+    var status = document.getElementById('status');
+    function clearFields() {
+      rua.value = '';
+      bairro.value = '';
+      cidade.value = '';
+    }
+    function setStatus(msg, type) {
+      status.textContent = msg || '';
+      status.className = type ? 'status ' + type : 'status';
+    }
+    function fetchCEP(raw) {
+      var cep = raw.replace(/\D/g, '');
+      if (cep.length !== 8) {
+        setStatus('', '');
+        clearFields();
+        return;
+      }
+      setStatus('Consultando CEP...', 'success');
+      fetch('https://viacep.com.br/ws/' + cep + '/json')
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && !data.erro) {
+            rua.value = data.logradouro || '';
+            bairro.value = data.bairro || '';
+            cidade.value = data.localidade || '';
+            setStatus('Endereço preenchido.', 'success');
+          } else {
+            clearFields();
+            setStatus('CEP não encontrado.', 'error');
+          }
+        })
+        .catch(function () {
+          clearFields();
+          setStatus('Falha ao consultar CEP.', 'error');
+        });
+    }
+    cepInput.addEventListener('input', function () { fetchCEP(cepInput.value.trim()); });
+  </script>
+</body>
+</html>
