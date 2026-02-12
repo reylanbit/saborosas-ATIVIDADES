@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 7 - Sistema de Abas</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tab-btn { padding: 10px 14px; border-radius: 999px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 600; }
+    .tab-btn:hover { background: #eef2ff; }
+    .tab-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .panels { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .panel { display: block; }
+    .panel.hidden { display: none; }
+    .panel h3 { margin: 0 0 8px; font-weight: 700; }
+    .panel p { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Sistema de Abas (Tabs) de Conteúdo</h1>
+    <p>Troque o conteúdo visível de "Nossos Serviços" sem mudar de página.</p>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="servicos">Nossos Serviços</button>
+      <button class="tab-btn" data-tab="planos">Planos</button>
+      <button class="tab-btn" data-tab="duvidas">Dúvidas Frequentes</button>
+    </div>
+    <div class="panels">
+      <div class="panel" data-panel="servicos">
+        <h3>Nossos Serviços</h3>
+        <p>Higienização, polimento, detalhamento interno e proteção de pintura.</p>
+      </div>
+      <div class="panel hidden" data-panel="planos">
+        <h3>Planos</h3>
+        <p>Básico, Completo e Premium, com periodicidade mensal e trimestral.</p>
+      </div>
+      <div class="panel hidden" data-panel="duvidas">
+        <h3>Dúvidas Frequentes</h3>
+        <p>Tempo médio de serviço, formas de pagamento e garantia dos materiais.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.panel');
+    function setActiveTab(key) {
+      for (var i = 0; i < buttons.length; i++) {
+        var b = buttons[i];
+        b.classList.toggle('active', b.getAttribute('data-tab') === key);
+      }
+      for (var j = 0; j < panels.length; j++) {
+        var p = panels[j];
+        var show = p.getAttribute('data-panel') === key;
+        p.classList.toggle('hidden', !show);
+      }
+    }
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function (e) {
+        var key = e.currentTarget.getAttribute('data-tab');
+        setActiveTab(key);
+      });
+    }
+  </script>
+</body>
+</html>
