@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 15 - Força de Senha com If/Else</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .field { margin-top: 16px; }
+    label { font-weight: 700; }
+    input[type="password"] {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+    }
+    .bar { height: 8px; width: 100%; background: #e5e7eb; border-radius: 999px; margin-top: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; width: 0%; background: #ef4444; transition: width .15s ease, background .15s ease; }
+    .status { margin-top: 8px; font-weight: 700; }
+    .status.fraca { color: #ef4444; }
+    .status.media { color: #f59e0b; }
+    .status.forte { color: #10b981; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Validador de Força de Senha</h1>
+    <p>Classifique a senha em tempo real usando if/else e mostre um indicador visual.</p>
+    <div class="field">
+      <label for="pwd">Senha</label>
+      <input id="pwd" type="password" placeholder="Digite sua senha">
+      <div class="bar"><div id="barFill" class="bar-fill"></div></div>
+      <div id="msg" class="status"></div>
+    </div>
+  </div>
+  <script>
+    var pwd = document.getElementById('pwd');
+    var barFill = document.getElementById('barFill');
+    var msg = document.getElementById('msg');
+    function updateStrength(value) {
+      var len = value.length;
+      var cls = '';
+      var text = '';
+      var pct = 0;
+      if (len < 6) {
+        cls = 'fraca';
+        text = 'Senha fraca';
+        pct = 33;
+        barFill.style.background = '#ef4444';
+      } else if (len <= 10) {
+        cls = 'media';
+        text = 'Senha média';
+        pct = 66;
+        barFill.style.background = '#f59e0b';
+      } else {
+        cls = 'forte';
+        text = 'Senha forte';
+        pct = 100;
+        barFill.style.background = '#10b981';
+      }
+      barFill.style.width = pct + '%';
+      msg.className = 'status ' + cls;
+      msg.textContent = text;
+    }
+    pwd.addEventListener('input', function () { updateStrength(pwd.value); });
+  </script>
+</body>
+</html>
