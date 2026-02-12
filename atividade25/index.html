@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade 25 - Calculadora de Desconto com Try/Catch</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; line-height: 1.6; margin: 0; background: #f9fafb; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); background: #fff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-weight: 700; }
+    input[type="number"] { width: 100%; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 16px; }
+    .actions { margin-top: 12px; }
+    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: #f9fafb; cursor: pointer; font-weight: 700; }
+    .result { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+    .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+    .row:last-child { border-bottom: none; }
+    .label { color: #6b7280; font-weight: 600; }
+    .value { color: #111827; font-weight: 800; }
+    .error { margin-top: 12px; color: #b91c1c; background: #fee2e2; border: 1px solid #fecaca; padding: 10px 12px; border-radius: 10px; font-weight: 700; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Missão do Dia: Calculadora de Desconto com Try/Catch</h1>
+    <div class="card">
+      <div class="grid">
+        <div class="field">
+          <label for="valor">Valor original (R$)</label>
+          <input id="valor" type="number" min="0" step="0.01" placeholder="ex.: 199.90">
+        </div>
+        <div class="field">
+          <label for="desc">Desconto (%)</label>
+          <input id="desc" type="number" min="0" step="0.01" placeholder="ex.: 15">
+        </div>
+      </div>
+      <div class="actions">
+        <button id="calc" class="btn">Calcular</button>
+      </div>
+      <div id="error" class="error"></div>
+      <div class="result">
+        <div class="row"><span class="label">Valor original</span><span id="orig" class="value">R$ 0,00</span></div>
+        <div class="row"><span class="label">Desconto aplicado</span><span id="aplicado" class="value">R$ 0,00</span></div>
+        <div class="row"><span class="label">Valor final</span><span id="final" class="value">R$ 0,00</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    var vEl = document.getElementById('valor');
+    var dEl = document.getElementById('desc');
+    var btn = document.getElementById('calc');
+    var errEl = document.getElementById('error');
+    var origEl = document.getElementById('orig');
+    var aplEl = document.getElementById('aplicado');
+    var finEl = document.getElementById('final');
+    function compute() {
+      try {
+        errEl.style.display = 'none';
+        errEl.textContent = '';
+        var rawV = vEl.value;
+        var rawD = dEl.value;
+        var valor = parseFloat(rawV);
+        var descPct = parseFloat(rawD);
+        if (!isFinite(valor) || !isFinite(descPct)) {
+          throw new Error('Digite números válidos para valor e desconto.');
+        }
+        if (valor < 0 || descPct < 0) {
+          throw new Error('Valores negativos não são permitidos.');
+        }
+        var desconto = valor * (descPct / 100);
+        var final = valor - desconto;
+        origEl.textContent = fmtBRL.format(valor);
+        aplEl.textContent = fmtBRL.format(desconto);
+        finEl.textContent = fmtBRL.format(final);
+      } catch (e) {
+        origEl.textContent = fmtBRL.format(0);
+        aplEl.textContent = fmtBRL.format(0);
+        finEl.textContent = fmtBRL.format(0);
+        errEl.textContent = e && e.message ? e.message : 'Entrada inválida.';
+        errEl.style.display = 'block';
+      }
+    }
+    btn.addEventListener('click', compute);
+    vEl.addEventListener('input', compute);
+    dEl.addEventListener('input', compute);
+  </script>
+</body>
+</html>
