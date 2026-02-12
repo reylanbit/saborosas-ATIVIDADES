@@ -59,6 +59,9 @@
     </header>
     <div class="toolbar">
       <input id="filter" type="search" placeholder="Filtrar atividades por título ou número">
+      <button id="sortAsc" class="btn" type="button">Ordenar ↑</button>
+      <button id="sortDesc" class="btn" type="button">Ordenar ↓</button>
+      <span id="count" class="btn" aria-live="polite">32 resultados</span>
     </div>
     <div id="cards" class="grid" role="list" aria-label="Lista de atividades"></div>
     <footer class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</footer>
@@ -116,26 +119,73 @@
       code.textContent = 'Código';
       code.setAttribute('aria-label', 'Ver código da atividade ' + i);
       code.title = 'Ver código da atividade ' + i;
+      code.target = '_blank';
+      code.rel = 'noopener';
       var html = document.createElement('a');
       html.className = 'btn';
       html.href = repo + '/blob/main/atividade' + i + '/index.html';
       html.textContent = 'index.html';
       html.setAttribute('aria-label', 'Abrir index.html da atividade ' + i);
       html.title = 'Abrir index.html da atividade ' + i;
+      html.target = '_blank';
+      html.rel = 'noopener';
+      var copy = document.createElement('button');
+      copy.className = 'btn';
+      copy.type = 'button';
+      copy.textContent = 'Copiar link';
+      copy.setAttribute('data-url', html.href);
       links.appendChild(code);
       links.appendChild(html);
+      links.appendChild(copy);
       c.appendChild(h);
       c.appendChild(links);
       cardsEl.appendChild(c);
     }
     for (var i = 1; i <= 32; i++) addCard(i);
     var filterEl = document.getElementById('filter');
+    var countEl = document.getElementById('count');
+    function updateCount() {
+      var items = cardsEl.children;
+      var visible = 0;
+      for (var k = 0; k < items.length; k++) if (items[k].style.display !== 'none') visible++;
+      countEl.textContent = visible + ' resultados';
+    }
     filterEl.addEventListener('input', function(e) {
       var q = e.target.value.toLowerCase();
       var items = cardsEl.children;
       for (var k = 0; k < items.length; k++) {
         var t = items[k].querySelector('h3').textContent.toLowerCase();
         items[k].style.display = t.indexOf(q) > -1 ? '' : 'none';
+      }
+      updateCount();
+    });
+    updateCount();
+    window.addEventListener('keydown', function(e) {
+      if (e.key === '/' && document.activeElement !== filterEl) { e.preventDefault(); filterEl.focus(); }
+    });
+    document.addEventListener('click', function(e) {
+      var t = e.target;
+      if (t.matches('.btn[type=\"button\"][data-url]')) {
+        var u = t.getAttribute('data-url');
+        if (navigator.clipboard && u) {
+          navigator.clipboard.writeText(u).then(function() {
+            var prev = t.textContent;
+            t.textContent = 'Copiado!';
+            setTimeout(function(){ t.textContent = prev; }, 800);
+          });
+        }
+      } else if (t.matches('#sortAsc')) {
+        var nums = [];
+        for (var i = 1; i <= 32; i++) nums.push(i);
+        cardsEl.innerHTML = '';
+        for (var i = 0; i < nums.length; i++) addCard(nums[i]);
+        filterEl.dispatchEvent(new Event('input'));
+      } else if (t.matches('#sortDesc')) {
+        var nums = [];
+        for (var i = 32; i >= 1; i--) nums.push(i);
+        cardsEl.innerHTML = '';
+        for (var i = 0; i < nums.length; i++) addCard(nums[i]);
+        filterEl.dispatchEvent(new Event('input'));
       }
     });
   </script>
