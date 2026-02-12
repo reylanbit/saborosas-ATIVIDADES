@@ -16,6 +16,10 @@
   <meta name="twitter:description" content="Explore as atividades com uma landing rápida e visual limpo.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/reylanbit/saborosas-ATIVIDADES/main/assets/og-banner.png">
   <meta name="theme-color" content="#0f172a">
+  <link rel="preconnect" href="https://reylanbit.github.io" crossorigin>
+  <link rel="dns-prefetch" href="https://reylanbit.github.io">
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
   <style>
     :root { color-scheme: light dark; }
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, sans-serif; margin: 0; background: #0f172a; color: #e5e7eb; }
@@ -35,17 +39,27 @@
     .btn:hover { background: #0e1626; }
     .footer { margin-top: 24px; font-size: 13px; color: #94a3b8; }
   </style>
+  <style>
+    .grid { gap: 16px; }
+    .card { padding: 16px; gap: 12px; }
+    .btn:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+    .toolbar { margin-top: 16px; display: flex; gap: 8px; }
+    .toolbar input[type="search"] { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #334155; background: #0b1220; color: #e5e7eb; }
+  </style>
 </head>
 <body>
   <a href="#cards" style="position:absolute;left:-9999px;top:-9999px;background:#0b1220;color:#e5e7eb;padding:8px 12px;border-radius:8px;border:1px solid #334155" onfocus="this.style.left='12px';this.style.top='12px'" onblur="this.style.left='-9999px';this.style.top='-9999px'">Ir para conteúdo</a>
   <div class="container" role="main">
     <header class="hero">
-      <img src="../assets/luan.gif" alt="Prévia animada">
+      <img src="../assets/luan.gif" alt="Prévia animada" loading="lazy" decoding="async">
       <div>
         <h1>GoDevs — Navegação das Atividades</h1>
         <div class="cta">Clique para ver código e descrição. Para previews públicos, ative GitHub Pages nesta pasta docs.</div>
       </div>
     </header>
+    <div class="toolbar">
+      <input id="filter" type="search" placeholder="Filtrar atividades por título ou número">
+    </div>
     <div id="cards" class="grid" role="list" aria-label="Lista de atividades"></div>
     <footer class="footer">Dica: deixe uma estrela se achou útil e compartilhe o link com o Social Preview configurado.</footer>
   </div>
@@ -115,6 +129,15 @@
       cardsEl.appendChild(c);
     }
     for (var i = 1; i <= 32; i++) addCard(i);
+    var filterEl = document.getElementById('filter');
+    filterEl.addEventListener('input', function(e) {
+      var q = e.target.value.toLowerCase();
+      var items = cardsEl.children;
+      for (var k = 0; k < items.length; k++) {
+        var t = items[k].querySelector('h3').textContent.toLowerCase();
+        items[k].style.display = t.indexOf(q) > -1 ? '' : 'none';
+      }
+    });
   </script>
 </body>
 </html>
